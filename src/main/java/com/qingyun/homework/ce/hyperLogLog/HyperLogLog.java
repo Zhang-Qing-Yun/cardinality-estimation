@@ -1,12 +1,14 @@
 package com.qingyun.homework.ce.hyperLogLog;
 
+import java.io.Serializable;
+
 /**
  * @description：
  * @author: 張青云
  * @create: 2021-11-29 10:48
  **/
-public class HyperLogLog {
-    private final RegisterSet registerSet;
+public class HyperLogLog implements Serializable {
+    private transient final RegisterSet registerSet;
     private final int log2m;   //log(m)
     private final double alphaMM;
 
@@ -76,7 +78,7 @@ public class HyperLogLog {
     }
 
 
-    public long cardinality() {
+    public long count() {
         double registerSum = 0;
         int count = registerSet.count;
         double zeros = 0.0;

@@ -21,7 +21,7 @@ public final class DataUtils {
         String line = null;
         try {
             //  读入所有的元素
-            inputStream = new FileInputStream("lib_base.txt");
+            inputStream = new FileInputStream("lib_two_base.txt");
             reader = new BufferedReader(new InputStreamReader(inputStream));
             while ((line = reader.readLine()) != null) {
                 baseData.add(line);

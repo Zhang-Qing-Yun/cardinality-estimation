@@ -13,13 +13,13 @@ public final class AnalyseUtils {
     /**
      * 精确获取数据集的基数
      */
-    public static long getUniqueDataCount() {
+    public static long getUniqueDataCount(String filename) {
         //  使用set来进行去重
         Set<String> set = new HashSet<>(6000);
         BufferedReader reader = null;
         String line = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("lib_final.txt")));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
             while ((line = reader.readLine()) != null) {
                 set.add(line);
             }

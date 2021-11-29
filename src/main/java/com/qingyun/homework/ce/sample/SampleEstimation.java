@@ -1,5 +1,6 @@
 package com.qingyun.homework.ce.sample;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,11 +8,11 @@ import java.util.*;
  * @author: 張青云
  * @create: 2021-11-29 18:37
  **/
-public class SampleEstimation<E> {
+public class SampleEstimation<E> implements Serializable {
     /**
      * 抽样大小的上阈
      */
-    private static final int TOP_THRESHOLD = 10000;
+    private static final int TOP_THRESHOLD = 200000;
     /**
      * 抽样大小的下阈
      */
@@ -23,9 +24,9 @@ public class SampleEstimation<E> {
     private int expectedNumber;
 
     /**
-     * 期待的错误率
+     * 抽样率
      */
-    private double expectedErrorRate;
+    private double sampleRate;
 
     /**
      * 抽样大小
@@ -46,8 +47,8 @@ public class SampleEstimation<E> {
         this(expectedNumber, 0.01);
     }
 
-    public SampleEstimation(int expectedNumber, double expectedErrorRate) {
-        int n = (int) (expectedNumber * (1 - expectedErrorRate));
+    public SampleEstimation(int expectedNumber, double sampleRate) {
+        int n = (int) (expectedNumber * sampleRate);
         if (n <= DOWN_THRESHOLD) {
             k = expectedNumber;
         } else if (n >= TOP_THRESHOLD) {
@@ -56,6 +57,7 @@ public class SampleEstimation<E> {
             k = n;
         }
         this.expectedNumber = expectedNumber;
+        this.sampleRate = sampleRate;
         sample = new ArrayList<>(k);
 
     }
@@ -86,6 +88,13 @@ public class SampleEstimation<E> {
         for(E one: sample) {
             set.add(one);
         }
-        return set.size();
+        return (int) (((double)set.size() / k) * realElementNum);
+    }
+
+    /**
+     * 获取抽样结果
+     */
+    public List<E> getSample() {
+        return this.sample;
     }
 }
