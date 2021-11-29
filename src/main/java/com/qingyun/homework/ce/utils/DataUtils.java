@@ -9,10 +9,7 @@ import java.util.*;
  * @create: 2021-11-29 15:14
  **/
 public final class DataUtils {
-    //  元素数量
-    private static final int DATA_COUNT = 3000000;
-
-    public static void createDataSet1() {
+    public static void createDataSet(int dataSize, String filename) {
         //  保存全部不重复样本
         List<String> baseData = new ArrayList<>(6000);
         //  最终包含重复元素的数据集
@@ -24,7 +21,7 @@ public final class DataUtils {
         String line = null;
         try {
             //  读入所有的元素
-            inputStream = new FileInputStream("lib1_base.txt");
+            inputStream = new FileInputStream("lib_base.txt");
             reader = new BufferedReader(new InputStreamReader(inputStream));
             while ((line = reader.readLine()) != null) {
                 baseData.add(line);
@@ -33,13 +30,13 @@ public final class DataUtils {
             //  生成重复数据
             int baseSize = baseData.size();
             Random random = new Random();
-            for(int i = 0; i < DATA_COUNT; i++) {
+            for(int i = 0; i < dataSize; i++) {
                 int index = random.nextInt(baseSize);
                 dataSet.add(baseData.get(index));
             }
 
             //  写入文件中
-            writer = new BufferedWriter(new FileWriter("lib1.txt"));
+            writer = new BufferedWriter(new FileWriter(filename));
             Iterator<String> iterator = dataSet.iterator();
             while (iterator.hasNext()) {
                 String one = iterator.next();

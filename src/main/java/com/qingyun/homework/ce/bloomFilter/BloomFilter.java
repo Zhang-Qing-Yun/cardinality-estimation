@@ -37,6 +37,11 @@ public class BloomFilter<E> implements Serializable {
     private int numberOfAddedElements;
 
     /**
+     * 实际添加到Bloom过滤器中的不重复元素数目
+     */
+    private int uniqueElementsNumber;
+
+    /**
      * 哈希函数的个数
      */
     private int k;
@@ -196,8 +201,17 @@ public class BloomFilter<E> implements Serializable {
 
     public void add(byte[] bytes) {
         int[] hashes = createHashes(bytes, k);
-        for (int hash : hashes)
-            bitset.set(Math.abs(hash % bitSetSize), true);
+        boolean unique = true;
+        for (int hash : hashes) {
+            int index = Math.abs(hash % bitSetSize);
+            if (!getBit(index)) {
+                unique = false;
+                bitset.set(index, true);
+            }
+        }
+        if (!unique) {
+            uniqueElementsNumber++;
+        }
         numberOfAddedElements++;
     }
 
@@ -245,5 +259,12 @@ public class BloomFilter<E> implements Serializable {
      */
     public int getCount() {
         return this.numberOfAddedElements;
+    }
+
+    /**
+     * 获取BloomFilter中不重复的元素的数目
+     */
+    public int getUniqueCount() {
+        return this.uniqueElementsNumber;
     }
 }
